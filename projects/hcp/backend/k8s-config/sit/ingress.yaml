@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hcp-backend
+  namespace: hcp-sit
+  labels:
+    app: hcp-backend
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  hearcheckpro-sit-backend.coherent.in
+      secretName: hcp-backend-tls
+  rules:
+  - host: "hearcheckpro-sit-backend.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: hcp-backend-svc
+            port: 
+              number: 8080

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elevate-portal-react
+  name: elevate-portal-react-svc
+  namespace: elevate-dev
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: elevate-portal-react

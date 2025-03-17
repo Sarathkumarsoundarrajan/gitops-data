@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: portal
+  name: portal
+  namespace: umc-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal
+  template:
+    metadata:
+      labels:
+        app: portal
+    spec:
+      containers:
+        - image: registry.coherent.in/user-manual-portal:12
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "2500Mi"
+            limits:
+              cpu: "2000"
+              memory: "3000Mi"
+          imagePullPolicy: Always
+          name: portal
+      imagePullSecrets:
+        - name: registry-regcred

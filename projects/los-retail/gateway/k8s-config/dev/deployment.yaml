@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+  namespace: los-retail-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - image: registry.coherent.in/api-gateway-los:4
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: gateway
+          # startupProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 7010
+          #   failureThreshold: 30
+          #   periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

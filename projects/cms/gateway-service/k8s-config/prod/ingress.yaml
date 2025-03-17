@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: cms-prod
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - cms-gateway.coherent.in
+      secretName: gateway-tls
+  rules:
+    - host: "cms-gateway.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-svc
+                port:
+                  number: 8010

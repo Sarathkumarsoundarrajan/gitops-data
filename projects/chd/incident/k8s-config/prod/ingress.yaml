@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: incident
+  namespace: chd-prod
+  labels:
+    app: incident
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  chd-incident.coherent.in
+      secretName: incident-tls
+  rules:
+  - host: "chd-incident.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: incident-svc
+            port: 
+              number: 8083

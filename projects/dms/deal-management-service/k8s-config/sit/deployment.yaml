@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dms-deal
+  name: dms-deal
+  namespace: dms-sit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dms-deal
+  template:
+    metadata:
+      labels:
+        app: dms-deal
+    spec:
+      containers:
+        - image: registry.coherent.in/deal-management-service:10
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: dms-deal
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8010
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal
+  namespace: cecom
+  labels:
+    app: portal
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+  
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        -  cecom-dev.coherent.in
+      secretName: portal-tls
+  rules:
+    - host: "cecom-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portal-svc
+                port:
+                  number: 80

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elevate-auth
+  namespace: elevate-dev
+  labels:
+    app: elevate-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elevate-auth
+  template:
+    metadata:
+      labels:
+        app: elevate-auth
+    spec:
+      containers:
+        - name: elevate-auth
+<<<<<<< HEAD
+          image: registry.coherent.in/elevate-backend-auth:3
+=======
+          image: registry.coherent.in/elevate-backend-auth:16
+>>>>>>> be2aa9b3ce2f9e6fa91fc04a587e0f546f637d0a
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1500Mi"
+            limits:
+              cpu: "500m"
+              memory: "2048Mi"
+#          startupProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 7015
+#            failureThreshold: 30
+#            periodSeconds: 10
+      imagePullSecrets:
+<<<<<<< HEAD
+        - name: registry-regcred
+=======
+        - name: registry-regcred
+>>>>>>> be2aa9b3ce2f9e6fa91fc04a587e0f546f637d0a

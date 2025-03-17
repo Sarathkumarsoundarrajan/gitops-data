@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: consul
+  name: consul
+  namespace: los-retail-dev
+spec:
+  ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 8500  # Update to Consul's actual port
+  selector:
+    app: consul

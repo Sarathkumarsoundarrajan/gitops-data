@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend
+  namespace: prove-dev
+  labels:
+    app: backend
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  prove-dev-backend.coherent.in
+      secretName: backend-tls
+  rules:
+  - host: "prove-dev-backend.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: backend-svc
+            port: 
+              number: 3000

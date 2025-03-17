@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth
+  namespace: chd-dev
+  labels:
+    app: auth
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  chd-auth-dev-test.coherent.in
+      secretName: auth-tls
+  rules:
+  - host: "chd-auth-dev-test.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: auth-svc
+            port: 
+              number: 8081

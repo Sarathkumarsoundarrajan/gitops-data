@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ctms-backend
+  name: ctms-backend
+  namespace: tt2024-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ctms-backend
+  template:
+    metadata:
+      labels:
+        app: ctms-backend
+    spec:
+      containers:
+        - image: registry.coherent.in/backend-ctms-service:43
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+            limits:
+              cpu: "200m"
+              memory: "600Mi"
+          imagePullPolicy: Always
+          name: ctms-backend
+          # startupProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 8081
+          #   failureThreshold: 30
+          #   periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

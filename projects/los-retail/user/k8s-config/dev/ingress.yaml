@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user
+  namespace: los-retail-dev
+  labels:
+    app: user
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  los-user-dev.coherent.in
+      secretName: user-tls
+  rules:
+  - host: "los-user-dev.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: user-svc
+            port: 
+              number: 6015

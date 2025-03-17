@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: consul
+  namespace: ams-dev
+  labels:
+    app: consul
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  ams-consul-dev.coherent.in
+      secretName: consul-tls
+  rules:
+  - host: "ams-consul-dev.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: consul
+            port: 
+              number: 8500

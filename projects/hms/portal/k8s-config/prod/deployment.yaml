@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: portal
+  name: portal
+  namespace: hms-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal
+  template:
+    metadata:
+      labels:
+        app: portal
+    spec:
+      containers:
+        - image: registry.coherent.in/coherent-hms-portal:390
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: portal
+      imagePullSecrets:
+        - name: registry-regcred

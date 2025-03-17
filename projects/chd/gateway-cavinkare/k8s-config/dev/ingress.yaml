@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: chd-cavinkare
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - chd-cavinkare-gateway-dev.coherent.in
+      secretName: gateway-tls
+  rules:
+    - host: "chd-cavinkare-gateway-dev.coherent.in"
+      http:
+        paths:
+          - path: /master-cavinkare(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: master-svc
+                port:
+                  number: 8082
+          - path: /incident-cavinkare(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: incident-svc
+                port:
+                  number: 8083
+          - path: /auth-cavinkare(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-svc
+                port:
+                  number: 8081

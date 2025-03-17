@@ -1,0 +1,8 @@
+Mysql DEV
+user: root
+password: rparootEz9qieJu7DD3
+rpa-dev-mysql.coherent.in:3319
+
+user: rpadevuser
+password: rpamsjVimWcfs
+rpa-dev-mysql.coherent.in:3319

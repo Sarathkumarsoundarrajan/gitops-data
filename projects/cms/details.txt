@@ -1,0 +1,22 @@
+cms-prod-mysql credentials
+    username : cmsproduser
+    password : tX2GIF4jf1
+    //old password : JIcGNhItfQXm
+    cms-mysql.coherent.in:3307
+
+    username : cmsprodreaduser
+    password : lXvDs9Vw4WVj
+    cms-mysql.coherent.in:3307
+
+    username : root
+    password : m80eXk4uR4xD
+    cms-mysql.coherent.in:3307
+
+cms-dev-mysql credentials
+    username: cmsdevuser
+    password: cmsZxByqABH
+    cms-dev-mysql.coherent.in:3308
+
+    username : root
+    password : cms@db-dev@coh5
+    cms-dev-mysql.coherent.in:3308

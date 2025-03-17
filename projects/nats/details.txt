@@ -1,0 +1,8 @@
+Mysql Dev
+
+Root Password: natsUres43Shes
+
+host: nats-dev-mysql.coherent.in
+port: 3328
+username: natsdevuser
+Password: natsKirDWEi34s

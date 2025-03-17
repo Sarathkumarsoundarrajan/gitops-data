@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cms-portal
+  name: cms-portal
+  namespace: cms-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cms-portal
+  template:
+    metadata:
+      labels:
+        app: cms-portal
+    spec:
+      containers:
+        - image: registry.coherent.in/cms-portal:27
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: cms-portal
+      imagePullSecrets:
+        - name: registry-regcred

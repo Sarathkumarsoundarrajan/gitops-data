@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: customer
+  name: customer
+  namespace: aequitas-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      labels:
+        app: customer
+    spec:
+      containers:
+        - image: registry.coherent.in/customer-service:145
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: customer
+          ports:
+            - containerPort: 7010
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 7010
+            failureThreshold: 30
+            periodSeconds: 10
+          env:
+            - name: JAVA_OPTS
+              value: "-Djava.awt.headless=true" # Enable headless mode here
+      imagePullSecrets:
+        - name: registry-regcred

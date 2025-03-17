@@ -1,0 +1,12 @@
+Mysql credentials 
+    root
+    cecomHC25iQnvAN
+    cecom-mysql.coherent.in:3322
+
+    cecomdevuser
+    cecomz8HPYGxl9e
+    cecom-mysql.coherent.in:3322
+
+Storage Explorer URL: https://storage-explorer.coherent.in/
+Access Key: cecomdevbrGAMjtMn4N8
+Secret Key: Us3mTQ6zF0B86tW7V1rwdYYjel4QWNT1dpqUobCw

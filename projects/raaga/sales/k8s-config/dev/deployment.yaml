@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sales
+  name: sales
+  namespace: raaga-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sales
+  template:
+    metadata:
+      labels:
+        app: sales
+    spec:
+      containers:
+        - image: registry.coherent.in/raaga-sales-service:123
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: sales
+          startupProbe: 
+            httpGet:
+              path: /actuator/health
+              port: 8092
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

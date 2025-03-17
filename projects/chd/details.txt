@@ -1,0 +1,39 @@
+prod-mysql credentials
+    username : chdproduser
+    password : chdKswLUDi23s
+    chd-mysql.coherent.in:3329
+
+    username : root
+    password : chdUrtfs93Ssts
+    chd-mysql.coherent.in:3329
+
+dev-mysql credentials
+    username: chduser
+    password: chdcoh5chd
+    chd-dev-mysql.coherent.in:3315
+
+    username : root
+    password : chdrootcoh5pass
+    chd-dev-mysql.coherent.in:3315
+
+sit-mysql credentials
+    username: chdsituser
+    password: chdhLbmtnYx0j
+    chd-sit-mysql.coherent.in:3333
+
+    username : root
+    password : chdgcKyv3U3gX
+    chd-sit-mysql.coherent.in:3333
+
+
+cavinkare dev-mysql credentials
+
+    username: chdckdevuser
+    password: chdckdevhLbihmtnYx0j
+    chd-cavinkare-dev-mysql.coherent.in:3338
+
+    username : root
+    password : chdckgcKyv3saU3gX
+    chd-cavinkare-dev-mysql.coherent.in:3338
+
+    

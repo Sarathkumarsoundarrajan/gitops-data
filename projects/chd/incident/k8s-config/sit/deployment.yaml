@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: incident
+  name: incident
+  namespace: chd-sit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: incident
+  template:
+    metadata:
+      labels:
+        app: incident
+    spec:
+      containers:
+        - image: registry.coherent.in/chd-incident:393
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: incident
+      imagePullSecrets:
+      - name: registry-regcred

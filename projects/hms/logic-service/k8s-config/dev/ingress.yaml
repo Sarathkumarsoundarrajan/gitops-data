@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: logic
+  namespace: hms-dev
+  labels:
+    app: logic
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  hms-dev-logic.coherent.in
+      secretName: logic-tls
+  rules:
+  - host: "hms-dev-logic.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: logic-svc
+            port: 
+              number: 8010

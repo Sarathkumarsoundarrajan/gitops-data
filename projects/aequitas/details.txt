@@ -1,0 +1,8 @@
+Mysql credentials 
+    username: root
+    password: aequitasdevgcdyv3U3gX
+    hosts : aequitas-dev-mysql.coherent.in:3336
+
+    Username: aequitasdevuser
+    Password: aequitashObmtnYx0j
+    Host: aequitas-dev-mysql.coherent.in:3336

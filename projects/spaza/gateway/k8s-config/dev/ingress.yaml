@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: spaza
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  spaza-dev.coherent.in
+      secretName: gateway-tls
+  rules:
+  - host: "spaza-dev.coherent.in"
+    http:
+      paths:
+        - path: /user-service(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: user-svc
+              port:
+                number: 8081

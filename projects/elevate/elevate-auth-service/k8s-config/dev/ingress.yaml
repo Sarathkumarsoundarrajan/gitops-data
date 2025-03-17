@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: elevate-auth
+  labels:
+    app: elevate-auth
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - elevate-auth-dev.coherent.in
+      secretName: elevate-tls
+  rules:
+    - host: elevate-auth-dev.coherent.in
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: elevate-auth-svc
+                port:
+<<<<<<< HEAD
+                  number: 7015
+=======
+                  number: 7015
+>>>>>>> be2aa9b3ce2f9e6fa91fc04a587e0f546f637d0a

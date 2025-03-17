@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elevate-portal-react
+  name: elevate-portal-react
+  namespace: elevate-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elevate-portal-react
+  template:
+    metadata:
+      labels:
+        app: elevate-portal-react
+    spec:
+      containers:
+        - image: registry.coherent.in/elevateconnector-portal:2
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: elevate-portal-react
+      imagePullSecrets:
+        - name: registry-regcred

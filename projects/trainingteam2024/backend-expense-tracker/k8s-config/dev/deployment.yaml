@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: expensetracker-backend
+  name: expensetracker-backend
+  namespace: tt2024-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expensetracker-backend
+  template:
+    metadata:
+      labels:
+        app: expensetracker-backend
+    spec:
+      containers:
+        - image: registry.coherent.in/backend-expense-tracker-service:46
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+            limits:
+              cpu: "200m"
+              memory: "600Mi"
+          imagePullPolicy: Always
+          name: expensetracker-backend
+          # startupProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 8081
+          #   failureThreshold: 30
+          #   periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

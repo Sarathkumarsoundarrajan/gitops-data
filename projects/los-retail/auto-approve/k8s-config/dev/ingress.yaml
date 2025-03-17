@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auto-approve
+  namespace: los-retail-dev
+  labels:
+    app: auto-approve
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  los-auto-approve-dev.coherent.in
+      secretName: auto-approve-tls
+  rules:
+  - host: "los-auto-approve-dev.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: auto-approve-svc
+            port: 
+              number: 6030

@@ -1,0 +1,11 @@
+@Library('gitops-data') _
+
+def PROJECT_SCM_URL = "https://scm.coherent.in/windesco/windesco2.0.git"
+def GITOPS_DATA_PROJECT_PATH = "windesco/portal-taskorder2"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+
+template_python(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH"
+)

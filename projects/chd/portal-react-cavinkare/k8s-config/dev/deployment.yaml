@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: portal-react-cavinkare
+  name: portal-react-cavinkare
+  namespace: chd-cavinkare
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal-react-cavinkare
+  template:
+    metadata:
+      labels:
+        app: portal-react-cavinkare
+    spec:
+      containers:
+        - image: registry.coherent.in/cavin-helpdesk-portal-react:81
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: portal-react-cavinkare
+      imagePullSecrets:
+        - name: registry-regcred

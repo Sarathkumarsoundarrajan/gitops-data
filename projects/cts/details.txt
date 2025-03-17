@@ -1,0 +1,9 @@
+DEV mysql credetials
+
+    Host: cts-dev-mysql.coherent.in:3332
+    username : root
+    password : ctsgcdyv3U3gX
+
+    Host: cts-dev-mysql.coherent.in:3332
+    username : ctsdevuser
+    password : ctshObmtnYx0j

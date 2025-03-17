@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal-rpa-dashboard
+  namespace: rpa-dashboard
+  labels:
+    app: portal-rpa-dashboard
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        -  rpa-dev-portal.coherent.in
+      secretName: portal-rpa-dashboard-tls
+  rules:
+    - host: "rpa-dev-portal.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portal-rpa-dashboard-svc
+                port:
+                  number: 80

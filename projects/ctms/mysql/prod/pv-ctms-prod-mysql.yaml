@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-ctms-prod-mysql
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: nfs.coherent.in
+    path: "/mnt/k8s-volume/nfs/k8s/ctms/prod/mysql"
+  mountOptions:
+    - nfsvers=4.2

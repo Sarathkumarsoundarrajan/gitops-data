@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hcp-backend
+  name: hcp-backend
+  namespace: hcp-sit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hcp-backend
+  template:
+    metadata:
+      labels:
+        app: hcp-backend
+    spec:
+      containers:
+        - image: registry.coherent.in/hcp-backend-service:94
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "2048Mi"
+          imagePullPolicy: Always
+          name: hcp-backend
+#          startupProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: 8080
+#            failureThreshold: 30
+#            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

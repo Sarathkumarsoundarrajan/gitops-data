@@ -1,0 +1,17 @@
+prod-mysql credentials
+    username : root
+    password : hmsprodrootEz7eweGu3HH6
+    url : hms-prod-mysql.coherent.in:3320
+
+    username : hmsproduser
+    password : hmsHSRg87rOxcHG
+    url : hms-prod-mysql.coherent.in:3320
+
+dev-mysql credentials
+    username: hmsdevuser
+    password: hmsrIlNJCXBTq
+    hms-dev-mysql.coherent.in:3310
+
+    username : root
+    password : HMS@coh5
+    hms-dev-mysql.coherent.in:3310

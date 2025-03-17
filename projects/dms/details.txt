@@ -1,0 +1,19 @@
+DEV mysql credetials
+
+    Host: dms-mysql.coherent.in:3317
+    username : root
+    password : dmsrootRz7qieVuOSS5
+
+    Host: dms-mysql.coherent.in:3317
+    username : dmsdevuser
+    password : dmsGYVf31tVyuWZ
+
+SIT mysql credetials
+
+    Host: dms-sit-mysql.coherent.in:3327
+    username : root
+    password : dmsTFsSUeAyIi
+
+    Host: dms-sit-mysql.coherent.in:3327
+    username : dmssituser
+    password : dmsDoXAoeFaDg

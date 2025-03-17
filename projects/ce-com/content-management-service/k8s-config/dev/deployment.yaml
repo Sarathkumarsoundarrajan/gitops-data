@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cecom-content
+  name: cecom-content
+  namespace: cecom
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cecom-content
+  template:
+    metadata:
+      labels:
+        app: cecom-content
+    spec:
+      containers:
+        - image: registry.coherent.in/ce-com-content-management-service:114
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: cecom-content
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8012
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

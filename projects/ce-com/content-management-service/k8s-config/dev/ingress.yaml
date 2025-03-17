@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cecom-content
+  namespace: cecom
+  labels:
+    app: cecom-content
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  cecom-dev-content.coherent.in
+      secretName: cecom-content-tls
+  rules:
+  - host: "cecom-dev-content.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: cecom-content-svc
+            port: 
+              number: 8012

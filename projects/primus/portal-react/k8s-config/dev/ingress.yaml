@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: primus-portal-react
+  namespace: primus-dev
+  labels:
+    app: primus-portal-react
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - primus-react-dev.coherent.in
+      secretName: primus-portal-react-tls
+  rules:
+    - host: "primus-react-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: primus-portal-react-svc
+                port:
+                  number: 80

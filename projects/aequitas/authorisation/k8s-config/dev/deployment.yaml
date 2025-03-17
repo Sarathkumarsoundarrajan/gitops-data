@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: authorization
+  name: authorization
+  namespace: aequitas-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorization
+  template:
+    metadata:
+      labels:
+        app: authorization
+    spec:
+      containers:
+        - image: registry.coherent.in/acs-authorizationms:34
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: authorization
+          ports:
+            - containerPort: 7011
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 7011
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

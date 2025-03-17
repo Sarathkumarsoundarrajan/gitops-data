@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ctms-backend
+  namespace: tt2024-dev
+  labels:
+    app: ctms-backend
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - tt2024-ctms-backend-dev.coherent.in
+      secretName: backend-tls
+  rules:
+    - host: "tt2024-ctms-backend-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ctms-backend-svc
+                port:
+                  number: 8091

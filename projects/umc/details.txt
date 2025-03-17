@@ -1,0 +1,9 @@
+Mysql credentials 
+    root
+    umcMUHhLoRY
+    umcMKshfTRSfd
+    umc-dev-mysql.coherent.in:3325
+
+    umcdevuser
+    umcuIjkQsfl
+    umc-dev-mysql.coherent.in:3325

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: logic
+  namespace: ctms-dev
+  labels:
+    app: logic
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        -  ctms-logic-dev.coherent.in
+      secretName: logic-tls
+  rules:
+    - host: "ctms-logic-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: logic-svc
+                port:
+                  number: 3001

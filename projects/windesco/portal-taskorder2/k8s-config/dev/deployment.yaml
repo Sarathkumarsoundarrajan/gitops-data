@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: windesco-dev
+  namespace: windesco-dev
+  labels:
+    app: windesco-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: windesco-dev
+  template:
+    metadata:
+      labels:
+        app: windesco-dev
+    spec:
+      containers:
+        - name: windesco-dev
+          image: registry.coherent.in/windesco2.0:2
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "2048Mi"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 5
+      imagePullSecrets:
+        - name: registry-regcred

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: expensetracker-backend
+  name: expensetracker-backend-svc
+  namespace: tt2024-dev
+spec:
+  ports:
+    - port: 8092
+      protocol: TCP
+      targetPort: 8092
+  selector:
+    app: expensetracker-backend

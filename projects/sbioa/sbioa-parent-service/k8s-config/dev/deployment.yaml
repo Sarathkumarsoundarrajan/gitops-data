@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: parent
+  name: parent
+  namespace: sbioa-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parent
+  template:
+    metadata:
+      labels:
+        app: parent
+    spec:
+      containers:
+        - image: registry.coherent.in/sbioa-parent-service:37
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "1000"
+              memory: "2000Mi"
+          imagePullPolicy: Always
+          name: parent
+          env:
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "false"
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8011
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

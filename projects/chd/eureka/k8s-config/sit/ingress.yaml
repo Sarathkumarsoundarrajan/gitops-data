@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eureka
+  namespace: chd-sit
+  labels:
+    app: eureka
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  chd-eureka-sit.coherent.in
+      secretName: eureka-tls
+  rules:
+  - host: "chd-eureka-sit.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: eureka-svc
+            port: 
+              number: 8761

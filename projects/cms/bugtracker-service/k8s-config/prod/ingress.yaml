@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bugtracker
+  namespace: cms-prod
+  labels:
+    app: bugtracker
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  cms-bugtracker.coherent.in
+      secretName: bugtracker-tls
+  rules:
+  - host: "cms-bugtracker.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: bugtracker-svc
+            port: 
+              number: 8013

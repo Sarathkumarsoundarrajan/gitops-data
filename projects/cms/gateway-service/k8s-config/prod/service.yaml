@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gateway
+  name: gateway-svc
+  namespace: cms-prod
+spec:
+  ports:
+    - port: 8010
+      protocol: TCP
+      targetPort: 8010
+  selector:
+    app: gateway

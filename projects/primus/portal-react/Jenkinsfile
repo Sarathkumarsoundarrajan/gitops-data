@@ -1,0 +1,19 @@
+@Library('gitops-data') _
+
+def PROJECT_SCM_URL = "https://scm.coherent.in/primus/primus-portal.git"
+def GITOPS_DATA_PROJECT_PATH = "primus/portal-react"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def SONAR_ENVIRONMENTS = ["dev"]
+def ENABLE_SONAR = false
+def ENABLE_SONAR_QUALITY_GATE = false
+def NODE_IMAGE = ""
+
+template_react(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)

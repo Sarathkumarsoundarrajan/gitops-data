@@ -1,0 +1,15 @@
+for this project we are using nats mysql
+
+Mysql Dev
+
+Root 
+host: nats-dev-mysql.coherent.in
+port: 3328
+username: root
+Password: natsUres43Shes
+
+Dev
+host: nats-dev-mysql.coherent.in
+port: 3328
+username: natsdevuser
+Password: natsKirDWEi34s

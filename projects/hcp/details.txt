@@ -1,0 +1,18 @@
+hcp-dev-mysql credentials
+    username: hcpdevuser
+    password: hcpLSDr54q9dfKU
+    hcp-dev-mysql.coherent.in:3321
+
+    username : root
+    password : hcpLr5asaq9dws
+    hcp-dev-mysql.coherent.in:3321
+
+hcp-sit-mysql credentials
+    username: hcpsituser
+    password: hcpghjr54q9dfKU
+    hcp-sit-mysql.coherent.in:3322
+
+    username : root
+    password : hcpLbm7asaq9dws
+    hcp-sit-mysql.coherent.in:3322
+    

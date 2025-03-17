@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dms-master
+  namespace: dms-dev
+  labels:
+    app: dms-master
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  zenvo-dev-master.coherent.in
+      secretName: dms-master-tls
+  rules:
+  - host: "zenvo-dev-master.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: dms-master-svc
+            port: 
+              number: 8012

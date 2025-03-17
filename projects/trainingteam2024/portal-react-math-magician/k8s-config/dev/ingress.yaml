@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mathmagician-portal-react
+  namespace: tt2024-dev
+  labels:
+    app: mathmagician-portal-react
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - tt2024-mathmagician-react-dev.coherent.in
+      secretName: mathmagician-portal-react-tls
+  rules:
+    - host: "tt2024-mathmagician-react-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mathmagician-portal-react-svc
+                port:
+                  number: 80

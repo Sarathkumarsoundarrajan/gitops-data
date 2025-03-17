@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: timesheet
+  namespace: cms-prod
+  labels:
+    app: timesheet
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  cms-timesheet.coherent.in
+      secretName: timesheet-tls
+  rules:
+  - host: "cms-timesheet.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: timesheet-svc
+            port: 
+              number: 8015

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: loan
+  name: loan
+  namespace: los-business-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loan
+  template:
+    metadata:
+      labels:
+        app: loan
+    spec:
+      containers:
+        - image: registry.coherent.in/los-loan-management-lms:1
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: loan
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8905
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

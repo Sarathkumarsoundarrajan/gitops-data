@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: portal-rpa-dashboard
+  name: portal-rpa-dashboard-svc
+  namespace: rpa-dashboard
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: portal-rpa-dashboard

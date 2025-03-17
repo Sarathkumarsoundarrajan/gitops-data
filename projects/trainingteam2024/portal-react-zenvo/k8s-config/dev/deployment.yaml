@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: zenvo-portal-react
+  name: zenvo-portal-react
+  namespace: tt2024-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zenvo-portal-react
+  template:
+    metadata:
+      labels:
+        app: zenvo-portal-react
+    spec:
+      containers:
+        - image: registry.coherent.in/frontend-zenvo-portal:12
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "150"
+              memory: "250Mi"
+          imagePullPolicy: Always
+          name: zenvo-portal-react
+      imagePullSecrets:
+        - name: registry-regcred

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: primus-portal-react
+  name: primus-portal-react
+  namespace: primus-tt-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: primustt-portal-react
+  template:
+    metadata:
+      labels:
+        app: primustt-portal-react
+    spec:
+      containers:
+        - image: registry.coherent.in/primustt-portal:22
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: primustt-portal-react
+      imagePullSecrets:
+        - name: registry-regcred

@@ -1,0 +1,16 @@
+    #Mongo DB
+   
+    url: primus-dev.coherent.in:27020
+    username: root
+    password: primusdevUiDewkW23SQi45
+
+    #Mysql
+    DEV mysql credetials
+
+    Host: primustt-dev-mysql.coherent.in:3337
+    username : root
+    password : primusttgcKyv3U3gX
+
+    Host: primustt-dev-mysql.coherent.in:3337
+    username : primusttdevuser
+    password : primusttdevhLbmtnYx0j

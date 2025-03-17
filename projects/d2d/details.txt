@@ -1,0 +1,9 @@
+DEV mysql credetials
+
+    Host: d2dnew-dev-mysql.coherent.in:3335
+    username : root
+    password : d2dnewgcdyv3U3gX
+
+    Host: d2dnew-dev-mysql.coherent.in:3335
+    username : d2dnewdevuser
+    password : d2dnewhObmtnYx0j

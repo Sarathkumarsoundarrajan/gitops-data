@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: logic
+  name: logic
+  namespace: cts-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logic
+  template:
+    metadata:
+      labels:
+        app: logic
+    spec:
+      containers:
+        - image: registry.coherent.in/cts-logic-service:15
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: logic
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8011
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

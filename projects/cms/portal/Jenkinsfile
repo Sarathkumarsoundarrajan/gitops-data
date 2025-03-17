@@ -1,0 +1,22 @@
+@Library('gitops-data') _
+
+def PROJECT_SCM_URL = "https://scm.coherent.in/coherent-management-system/cms-portal.git"
+def GITOPS_DATA_PROJECT_PATH = "cms/portal"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def SONAR_ENVIRONMENTS = ["dev"]
+def ENABLE_SONAR = true 
+def ENABLE_SONAR_QUALITY_GATE = true
+def ANGULAR_VERSION = "@angular/cli"
+def NODE_IMAGE = ""
+
+
+template_angular(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$ANGULAR_VERSION",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)

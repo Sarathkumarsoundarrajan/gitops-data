@@ -1,0 +1,8 @@
+Mysql credentials 
+    root
+    spazaUrtfs93Ssts
+    spaza-dev.coherent.in:3330
+
+    Username: spazadevuser
+    Password: spazaKswLUDi23s
+    Host: spaza-dev.coherent.in:3330

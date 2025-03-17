@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: logic
+  name: logic
+  namespace: ctms-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logic
+  template:
+    metadata:
+      labels:
+        app: logic
+    spec:
+      containers:
+        - image: registry.coherent.in/coherent-jira-service:267
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "1000"
+              memory: "2000Mi"
+          imagePullPolicy: Always
+          name: logic
+      imagePullSecrets:
+        - name: registry-regcred

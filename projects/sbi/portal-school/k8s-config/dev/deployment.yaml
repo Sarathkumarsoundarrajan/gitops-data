@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sbioa-portal-react
+  name: sbioa-portal-react
+  namespace: sbi-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sbioa-portal-react
+  template:
+    metadata:
+      labels:
+        app: sbioa-portal-react
+    spec:
+      containers:
+        - image: registry.coherent.in/sbioa-portal:65
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: sbioa-portal-react
+      imagePullSecrets:
+        - name: registry-regcred

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: expensetracker-backend
+  namespace: tt2024-dev
+  labels:
+    app: expensetracker-backend
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tt2024-expensetracker-backend-dev.coherent.in
+      secretName: backend-tls
+  rules:
+    - host: tt2024-expensetracker-backend-dev.coherent.in
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: expensetracker-backend-svc
+                port:
+                  number: 8092

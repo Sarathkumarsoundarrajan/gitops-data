@@ -1,0 +1,18 @@
+@Library('gitops-data') _
+
+def PROJECT_SCM_URL = "https://scm.coherent.in/coherent-hms-service/coherent-hms-backend.git"
+def GITOPS_DATA_PROJECT_PATH = "hms/logic-service"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def SONAR_ENVIRONMENTS = ["dev"]
+def ENABLE_SONAR = false
+def ENABLE_SONAR_QUALITY_GATE = false
+
+
+template_maven(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)

@@ -1,0 +1,50 @@
+// Helps to show the size of the folders and sort 
+du -sh */ | sort -hr
+
+//put inside the spec to specify node in the deployment file
+      nodeSelector:
+        kubernetes.io/hostname: coherentcbeserver
+
+// default image name
+<IMAGENAME>:<TAG>
+
+// Get the size of the docker image
+docker manifest inspect -v registry.coherent.in/hcp-backend-dev:73 | grep size | awk -F ':' '{sum+=$NF} END {print sum}' | numfmt --to=iec-i 
+
+
+//
+sudo iptables -t nat -A OUTPUT -d <Private IP of master node> -j DNAT --to-destination <Public IP of master node>
+sudo iptables -t nat -A OUTPUT -d 192.168.0.108 -j DNAT --to-destination 49.207.178.29
+
+// secret generate
+kubectl create secret generic datasource-credentials --from-literal=username=cmsproduser --from-literal=password=JIcGNhItfQXm -n cms-prod
+// new secret generate for cms
+kubectl create secret generic datasource-credentials --from-literal=username=cmsprodreaduser --from-literal=password=lXvDs9Vw4WVj -n cms-prod
+// new secret generate for cms-dev
+kubectl create secret generic datasource-credentials --from-literal=username=cmsdevuser --from-literal=password=cmsZxByqABH -n cms-dev
+// new secret generate for los business
+kubectl create secret generic datasource-credentials --from-literal=username=root --from-literal=password=losrootEz9qieJu7DD3 -n los-business-dev
+// new secret generate for lockourier wordpress
+kubectl create secret generic datasource-credentials --from-literal=username=natsdevuser --from-literal=password=natsKirDWEi34s -n lockourier-dev
+
+
+
+
+for folder in */; do folder="${folder%/}"; find "$folder" -type d -name "argo-application-config" -exec sh -c 'cd "{}" && find . -type f -name "*.yaml" -exec kubectl apply -f {} -n argocd \;' \;; done
+for folder in */; do folder="${folder%/}"; find "$folder" -type d -name "argo-application-config" -exec sh -c 'cd "{}" && ls' \;; done
+
+// Create docker sceret
+kubectl -n ctms-dev create secret docker-registry registry-regcred --docker-server=registry.coherent.in --docker-username=coherent --docker-password=Coherent@5 --docker-email=shankar.krishna@coherent.in
+
+// Create docker secret new
+kubectl -n ctms-dev create secret docker-registry registry-regcred --docker-server=registry.coherent.in --docker-username=coherent --docker-password=Coherent@5 --docker-email=sivaprasath.selvam@coherent.in
+
+
+//To delete the namespace in the terminating status
+NAMESPACE=<namespace name here> ; kubectl get namespace $NAMESPACE -o json | jq 'del(.spec.finalizers[0])' | kubectl replace --raw "/api/v1/namespaces/$NAMESPACE/finalize" -f -
+
+//db restriction for dev user
+GRANT select, create, alter, insert, delete, update ON raaga_dev.* TO 'raagadevuser'@'%';
+
+//db REFERENCE access
+GRANT REFERENCES ON raaga_dev.* TO 'raagadevuser'@'%';

@@ -1,0 +1,23 @@
+MySql dev server
+
+DEV USER
+HOST: ctms-dev-mysql.coherent.in:3324
+Username: ctmsdevuser
+Password: ctmsbwcAPSbU
+
+ROOT USER
+HOST: ctms-dev-mysql.coherent.in:3324
+Username: root
+Password: ctmsLhmyRfNz
+
+MySql PROD server
+
+PROD USER
+HOST: ctms-prod-mysql.coherent.in:3326
+Username: ctmsproduser
+Password: ctmsDoXAoeFaDg
+
+ROOT USER
+HOST: ctms-prod-mysql.coherent.in:3326
+Username: root
+Password: ctmsTFsSUeAyIi

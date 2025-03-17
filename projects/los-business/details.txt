@@ -1,0 +1,12 @@
+root
+username: root
+password: losrootEz9qieJu7DD3
+URL: los-mysql.coherent.in:3313
+
+
+dev //dev user only created access not restricted 13.02.2025
+username: losdevuser
+password: losjhbjhZxByqABH
+URL: los-mysql.coherent.in:3313
+
+

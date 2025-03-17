@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hcp-portal
+  namespace: hcp-sit
+  labels:
+    app: hcp-portal
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - hcp-sit.coherent.in
+      secretName: hcp-portal-tls
+  rules:
+    - host: "hcp-sit.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hcp-portal-svc
+                port:
+                  number: 80

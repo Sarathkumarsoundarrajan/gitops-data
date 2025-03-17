@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tt2024-portal-react-expense-tracker-dev-application
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.teams: Build-Notifications #Teams Channel
+    notifications.argoproj.io/subscribe.on-sync-failed.teams: Build-Notifications #Teams Channel
+spec:
+  project: default
+  source:
+    repoURL: https://scm.coherent.in/cicd/gitops-data.git
+    targetRevision: master
+    path: projects/trainingteam2024/portal-react-expense-tracker/k8s-config/dev
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true

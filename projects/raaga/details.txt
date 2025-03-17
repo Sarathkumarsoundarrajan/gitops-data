@@ -1,0 +1,10 @@
+DEV mysql credetials
+
+    Host: raaga-dev-mysql.coherent.in:3334
+    username : root
+    password : raagac6mt2wgn6m
+
+    Host: raaga-dev-mysql.coherent.in:3334
+    username : raagadevuser
+    password : raaga0cz84gnwlo
+

@@ -1,0 +1,5 @@
+    #Mongo DB
+   
+    url: primus-dev.coherent.in:27020
+    username: root
+    password: primusdevUiDewkW23SQi45

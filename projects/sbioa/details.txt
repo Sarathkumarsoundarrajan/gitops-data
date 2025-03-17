@@ -1,0 +1,31 @@
+sbioa-dev-mysql credentials
+    username: sbioadevuser
+    password: sbioaZxByqABH
+    sbioa-dev-mysql.coherent.in:3311
+
+    username : root
+    password : sbioa@db-dev@coh5
+    sbioa-dev-mysql.coherent.in:3311
+
+
+sbioa-mongo-dev.coherent.in credentials
+ 
+    username : root
+    password : JfcA48txVRBwVoTp
+    sbioa-mongo-dev.coherent.in:27022
+
+
+sbioa-sit-mysql credentials
+    username: sbioasituser
+    password: sbioayuByqABH
+    sbioa-sit-mysql.coherent.in:3312
+
+    username : root
+    password : sbioa@db-sit@coh5
+    sbioa-sit-mysql.coherent.in:3312
+
+sbioa-mongo-dev.coherent.in credentials
+ 
+    username : root
+    password : JggjkjgkVRBwVoTp
+    sbioa-mongo-sit.coherent.in:27023

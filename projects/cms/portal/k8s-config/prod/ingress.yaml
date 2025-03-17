@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cms-portal
+  namespace: cms-prod
+  labels:
+    app: cms-portal
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        -  cms.coherent.in
+      secretName: cms-portal-tls
+  rules:
+    - host: "cms.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cms-portal-svc
+                port:
+                  number: 80

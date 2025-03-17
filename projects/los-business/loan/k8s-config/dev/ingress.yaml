@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loan
+  namespace: los-business-dev
+  labels:
+    app: loan
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  business-dev-loan.coherent.in
+      secretName: loan-tls
+  rules:
+  - host: "business-dev-loan.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: loan-svc
+            port: 
+              number: 8905

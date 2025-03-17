@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal-react-cavinkare
+  namespace: chd-cavinkare
+  labels:
+    app: portal-react-cavinkare
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - chd-cavinkare-dev.coherent.in
+      secretName: portal-react-cavinkare-tls
+  rules:
+    - host: "chd-cavinkare-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portal-react-cavinkare-svc
+                port:
+                  number: 80

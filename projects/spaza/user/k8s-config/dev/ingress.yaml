@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user
+  namespace: spaza
+  labels:
+    app: user
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  spaza-user-dev.coherent.in
+      secretName: user-tls
+  rules:
+  - host: "spaza-user-dev.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: user-svc
+            port: 
+              number: 8081

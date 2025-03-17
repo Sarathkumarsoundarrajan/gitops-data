@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: dms-sit
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  zenvo-gateway-sit.coherent.in
+      secretName: gateway-tls
+  rules:
+  - host: "zenvo-gateway-sit.coherent.in"
+    http:
+      paths:
+        - path: /deal-management-service(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: dms-deal-svc
+              port:
+                number: 8010
+        - path: /master-service(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: dms-master-svc
+              port:
+                number: 8012

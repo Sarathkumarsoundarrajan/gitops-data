@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: hms-dev
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  hms-gateway-dev.coherent.in
+      secretName: gateway-tls
+  rules:
+  - host: "hms-gateway-dev.coherent.in"
+    http:
+      paths:
+        - path: /hms(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: logic-svc
+              port:
+                number: 8010

@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: sbioa-dev
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  sbioa-gateway-dev.coherent.in
+      secretName: gateway-tls
+  rules:
+  - host: "sbioa-gateway-dev.coherent.in"
+    http:
+      paths:
+        - path: /sbioa-auth(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: auth-svc
+              port:
+                number: 8010
+        - path: /sbioa-businesslogic(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: logic-svc
+              port:
+                number: 8012
+        - path: /sbioa-parent-service(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: parent-svc
+              port:
+                number: 8011

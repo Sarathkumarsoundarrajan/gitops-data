@@ -1,0 +1,11 @@
+MySql dev server
+
+DEV USER
+HOST: ams-dev-mysql.coherent.in:3323
+Username: amsdevuser
+Password: amsz8HPYGxl9e
+
+ROOT USER
+HOST: ams-dev-mysql.coherent.in:3323
+Username: root
+Password: amsHC25iQnvAN

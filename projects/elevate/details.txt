@@ -1,0 +1,9 @@
+DEV mysql credetials
+
+    Host: elevate-dev-mysql.coherent.in:3330
+    username : root
+    password : elevate-dev@coh5
+
+    Host: elevate-dev-mysql.coherent.in:3330
+    username : elevatedevuser
+    password : elevateyuByqABH

@@ -1,0 +1,22 @@
+@Library('gitops-data') _
+
+def PROJECT_SCM_URL = "https://scm.coherent.in/los/portal-los-business-application.git"
+def GITOPS_DATA_PROJECT_PATH = "los-business/portal"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def SONAR_ENVIRONMENTS = ["dev"]
+def ENABLE_SONAR = false
+def ENABLE_SONAR_QUALITY_GATE = false
+def ANGULAR_VERSION = "@angular/cli@8.2.2"
+def NODE_IMAGE = "timbru31/node-alpine-git:12"
+
+
+template_angular(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$ANGULAR_VERSION",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lead
+  name: lead
+  namespace: los-retail-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lead
+  template:
+    metadata:
+      labels:
+        app: lead
+    spec:
+      containers:
+        - image: registry.coherent.in/lead-management-los-new:1
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4096Mi"
+          imagePullPolicy: Always
+          name: lead
+          # startupProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 7011
+          #   failureThreshold: 30
+          #   periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-regcred

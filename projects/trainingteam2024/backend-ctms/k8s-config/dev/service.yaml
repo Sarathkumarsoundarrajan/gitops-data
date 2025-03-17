@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ctms-backend
+  name: ctms-backend-svc
+  namespace: tt2024-dev
+spec:
+  ports:
+    - port: 8091
+      protocol: TCP
+      targetPort: 8091
+  selector:
+    app: ctms-backend

@@ -1,0 +1,12 @@
+    #Mongo DB
+    url: prove-dev-mongodb.coherent.in:27019
+    username: root
+    password: provedevUiDewkW23SQi45
+
+    username: provedevuser
+    password: provedevWe32HSDure87
+
+    #Redis DB
+    url: redis-prove.coherent.in:6379
+    username: default
+    password: EGsu5ZnoFTvv

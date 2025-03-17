@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eureka
+  name: eureka
+  namespace: chd-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      containers:
+        - image: registry.coherent.in/chd-eureka:17
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1500Mi"
+            limits:
+              cpu: "100m"
+              memory: "1500Mi"
+          imagePullPolicy: Always
+          name: eureka
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            failureThreshold: 30
+            periodSeconds: 10
+      imagePullSecrets:
+      - name: registry-regcred

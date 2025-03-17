@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hcp-portal
+  name: hcp-portal
+  namespace: hcp-sit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hcp-portal
+  template:
+    metadata:
+      labels:
+        app: hcp-portal
+    spec:
+      containers:
+        - image: registry.coherent.in/hearcheck-portal:32
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "200"
+              memory: "400Mi"
+          imagePullPolicy: Always
+          name: hcp-portal
+      imagePullSecrets:
+        - name: registry-regcred

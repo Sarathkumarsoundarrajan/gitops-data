@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dms-ml
+  namespace: dms-ml
+  labels:
+    app: dms-ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dms-ml
+  template:
+    metadata:
+      labels:
+        app: dms-ml
+    spec:
+      containers:
+        - name: dms-ml
+          image: registry.coherent.in/dms-ml-service:8
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2024Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4048Mi"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 5
+      imagePullSecrets:
+        - name: registry-regcred

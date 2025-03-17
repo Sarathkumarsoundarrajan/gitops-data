@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dms-ml
+  namespace: dms-ml
+  labels:
+    app: dms-ml
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - zenvo-dev-ml.coherent.in
+      secretName: dms-ml-tls
+  rules:
+    - host: "zenvo-dev-ml.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dms-ml-svc
+                port:
+                  number: 5000

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lead
+  namespace: los-business-dev
+  labels:
+    app: lead
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  business-dev-lead.coherent.in
+      secretName: lead-tls
+  rules:
+  - host: "business-dev-lead.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: lead-svc
+            port: 
+              number: 7011

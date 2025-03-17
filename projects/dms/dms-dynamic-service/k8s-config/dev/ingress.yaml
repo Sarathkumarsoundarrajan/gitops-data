@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dms-dynamic
+  labels:
+    app: dms-dynamic
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+      -  dms-dev-dynamic.coherent.in
+      secretName: dms-dynamic-tls
+  rules:
+  - host: "dms-dev-dynamic.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: dms-dynamic-svc
+            port: 
+              number: 8080

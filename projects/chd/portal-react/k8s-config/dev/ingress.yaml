@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal-react
+  namespace: chd-dev
+  labels:
+    app: portal-react
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        -  chd-react-dev.coherent.in
+      secretName: portal-react-tls
+  rules:
+    - host: "chd-react-dev.coherent.in"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portal-react-svc
+                port:
+                  number: 80

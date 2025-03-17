@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: cms-dev
+  labels:
+    app: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Content-Type-Options: nosniff";
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - cms-dev-gateway.coherent.in
+      secretName: gateway-tls
+  rules:
+    - host: "cms-dev-gateway.coherent.in"
+      http:
+        paths:
+          - path: /cms-auth-service
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-svc
+                port:
+                  number: 8011
+          - path: /cms-bug-tracker-service
+            pathType: Prefix
+            backend:
+              service:
+                name: bugtracker-svc
+                port:
+                  number: 8013
+          - path: /cms-employee-service
+            pathType: Prefix
+            backend:
+              service:
+                name: employee-svc
+                port:
+                  number: 8012
+          - path: /cms-master-service
+            pathType: Prefix
+            backend:
+              service:
+                name: master-svc
+                port:
+                  number: 8014
+          - path: /cms-timesheet-service
+            pathType: Prefix
+            backend:
+              service:
+                name: timesheet-svc
+                port:
+                  number: 8015
