@@ -11,10 +11,10 @@ spec:
   ingressClassName: public
   tls:
     - hosts:
-        - chd-cavinkare-dev.coherent.in
+        - chd-dev.zenvo.ai
       secretName: portal-react-cavinkare-tls
   rules:
-    - host: "chd-cavinkare-dev.coherent.in"
+    - host: "chd-dev.zenvo.ai"
       http:
         paths:
           - path: /
