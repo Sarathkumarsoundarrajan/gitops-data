@@ -1,7 +1,7 @@
 pipeline {
-    agent {
-        kubernetes {
-            yaml """
+        agent {
+            kubernetes {
+                yaml """
         apiVersion: v1
         kind: Pod
         metadata:
@@ -10,7 +10,7 @@ pipeline {
         spec:
           containers:
           - name: node
-            image: node:18-alpine
+            image: "${NODE_IMAGE ?: 'node:18-alpine'}"
             command:
             - cat
             tty: true
@@ -33,10 +33,16 @@ pipeline {
             - mountPath: "/workspace"
               name: "workspace-volume"
               readOnly: false
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker
           volumes:
-          - name: workspace-volume
-            emptyDir: {}
-        """
+          - name: kaniko-secret
+            secret:
+              secretName: registry-regcred
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
+                """
         }
     }
         environment {
@@ -99,3 +105,4 @@ pipeline {
 
         }
     }
+}
