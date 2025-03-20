@@ -1,6 +1,6 @@
 @Library('gitops-data') _
 
-def PROJECT_SCM_URL = "https://scm.coherent.in/cavin-helpdesk/cavin-helpdesk-portal-react.git"
+def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
 def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
 def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
 def SONAR_ENVIRONMENTS = ["dev"]
