@@ -1,14 +1,13 @@
 #!/usr/bin/env groovy
 
-
 def call(
-String PROJECT_SCM_URL,
-String PROJECT_NAME,
-String GITOPS_DATA_PROJECT_PATH,
-String NODE_IMAGE,
-Boolean ENABLE_SONAR,
-Boolean ENABLE_SONAR_QUALITY_GATE,
-List<String> SONAR_ENVIRONMENTS
+    String PROJECT_SCM_URL,
+    String PROJECT_NAME,
+    String GITOPS_DATA_PROJECT_PATH,
+    String NODE_IMAGE,
+    Boolean ENABLE_SONAR,
+    Boolean ENABLE_SONAR_QUALITY_GATE,
+    List<String> SONAR_ENVIRONMENTS
 ) {
     pipeline {
         agent {
@@ -36,24 +35,6 @@ List<String> SONAR_ENVIRONMENTS
             command:
             - cat
             tty: true
-          - name: kaniko
-            image: gcr.io/kaniko-project/executor:debug
-            command:
-            - cat
-            tty: true
-            volumeMounts:
-            - mountPath: "/workspace"
-              name: "workspace-volume"
-              readOnly: false
-            - name: kaniko-secret
-              mountPath: /kaniko/.docker
-          volumes:
-          - name: kaniko-secret
-            secret:
-              secretName: registry-regcred
-              items:
-                - key: .dockerconfigjson
-                  path: config.json
       """
             }
         }
@@ -70,14 +51,13 @@ List<String> SONAR_ENVIRONMENTS
         }
 
         stages {
-
             stage('Check out the Source Code') {
                 steps {
                     module_checkOutTheSourceCode()
                 }
             }
 
-             stage('Obtaining Config Files') {
+            stage('Obtaining Config Files') {
                 steps {
                     module_obtainingConfigFiles()
                 }
@@ -114,7 +94,6 @@ List<String> SONAR_ENVIRONMENTS
                     module_publishDeployment()
                 }
             }
-
         }
     }
 }
