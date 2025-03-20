@@ -11,9 +11,9 @@ Boolean ENABLE_SONAR_QUALITY_GATE,
 List<String> SONAR_ENVIRONMENTS
 ) {
     pipeline {
-    agent {
-        kubernetes {
-            yaml """
+        agent {
+            kubernetes {
+                yaml """
         apiVersion: v1
         kind: Pod
         metadata:
@@ -22,7 +22,7 @@ List<String> SONAR_ENVIRONMENTS
         spec:
           containers:
           - name: node
-            image: node:18-alpine
+            image: "${NODE_IMAGE ?: 'node:18-alpine'}"
             command:
             - cat
             tty: true
@@ -45,12 +45,18 @@ List<String> SONAR_ENVIRONMENTS
             - mountPath: "/workspace"
               name: "workspace-volume"
               readOnly: false
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker
           volumes:
-          - name: workspace-volume
-            emptyDir: {}
-        """
+          - name: kaniko-secret
+            secret:
+              secretName: registry-regcred
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
+      """
+            }
         }
-    }
         environment {
             IMAGE_NAME = "${COHERENT_DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${BUILD_NUMBER}"
             PREVIOUS_BUILD_NUMBER = util_subtractAndConvert("${BUILD_NUMBER}")
