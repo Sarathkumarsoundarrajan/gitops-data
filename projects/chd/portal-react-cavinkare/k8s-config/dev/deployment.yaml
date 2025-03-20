@@ -16,7 +16,7 @@ spec:
         app: portal-react-cavinkare
     spec:
       containers:
-        - image: registry.coherent.in/cavin-helpdesk-portal-react:81
+        - image: <IMAGENAME>:<TAG>
           resources:
             requests:
               cpu: "100m"
