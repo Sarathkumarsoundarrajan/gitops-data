@@ -44,7 +44,6 @@ def call(
             DEPLOYMENT_FILE_PATH = "projects/${GITOPS_DATA_PROJECT_PATH}/k8s-config/${ENVIRONMENT}/deployment.yaml"
             PROJECT_CONFIG_PATH = "gitops-data/projects/${GITOPS_DATA_PROJECT_PATH}/config"
             COMMON_PATH = "gitops-data/common"
-            SONAR_TOKEN = credentials('SONAR_TOKEN')
             COHERENT_GITOPS_DATA_TOKEN = credentials('COHERENT_GITOPS_DATA_TOKEN')
             PROJECT_NAME = "${PROJECT_NAME}"
             PROJECT_SCM_URL = "${PROJECT_SCM_URL}"
