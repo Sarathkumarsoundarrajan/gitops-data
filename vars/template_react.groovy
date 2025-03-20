@@ -1,19 +1,7 @@
-#!/usr/bin/env groovy
-
-
-def call(
-String PROJECT_SCM_URL,
-String PROJECT_NAME,
-String GITOPS_DATA_PROJECT_PATH,
-String NODE_IMAGE,
-Boolean ENABLE_SONAR,
-Boolean ENABLE_SONAR_QUALITY_GATE,
-List<String> SONAR_ENVIRONMENTS
-) {
-    pipeline {
-        agent {
-            kubernetes {
-                yaml """
+pipeline {
+    agent {
+        kubernetes {
+            yaml """
         apiVersion: v1
         kind: Pod
         metadata:
@@ -22,7 +10,7 @@ List<String> SONAR_ENVIRONMENTS
         spec:
           containers:
           - name: node
-            image: "${NODE_IMAGE ?: 'node:18-alpine'}"
+            image: node:18-alpine
             command:
             - cat
             tty: true
@@ -45,18 +33,12 @@ List<String> SONAR_ENVIRONMENTS
             - mountPath: "/workspace"
               name: "workspace-volume"
               readOnly: false
-            - name: kaniko-secret
-              mountPath: /kaniko/.docker
           volumes:
-          - name: kaniko-secret
-            secret:
-              secretName: registry-regcred
-              items:
-                - key: .dockerconfigjson
-                  path: config.json
-      """
-            }
+          - name: workspace-volume
+            emptyDir: {}
+        """
         }
+    }
         environment {
             IMAGE_NAME = "${COHERENT_DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${BUILD_NUMBER}"
             PREVIOUS_BUILD_NUMBER = util_subtractAndConvert("${BUILD_NUMBER}")
