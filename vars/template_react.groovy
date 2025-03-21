@@ -14,40 +14,39 @@ def call(
         kubernetes {
             yaml """
     apiVersion: v1
-    kind: Pod
-    metadata:
-      labels:
-        app: jenkins-agent
-    spec:
-      containers:
-      - name: node
-        image: "${NODE_IMAGE ?: 'node:18-alpine'}"
-        command:
-        - cat
-        tty: true
-      - name: java-node
-        image: timbru31/java-node
-        command:
-        - cat
-        tty: true
-      - name: git
-        image: bitnami/git:latest
-        command:
-        - cat
-        tty: true
-      - name: kaniko
-        image: gcr.io/kaniko-project/executor:latest
-        command:
-        - sleep
-        args:
-        - infinity
-        volumeMounts:
-        - name: kaniko-secret
-          mountPath: /kaniko/.docker
-      volumes:
+kind: Pod
+metadata:
+  labels:
+    app: jenkins-agent
+spec:
+  containers:
+  - name: node
+    image: "node:18-alpine"
+    command:
+    - cat
+    tty: true
+  - name: java-node
+    image: timbru31/java-node
+    command:
+    - cat
+    tty: true
+  - name: git
+    image: bitnami/git:latest
+    command:
+    - cat
+    tty: true
+  - name: kaniko   # <-- Add this
+    image: gcr.io/kaniko-project/executor:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
       - name: kaniko-secret
-        secret:
-          secretName: docker-config
+        mountPath: /kaniko/.docker
+  volumes:
+    - name: kaniko-secret
+      secret:
+        secretName: docker-config
   """
         }
     }
