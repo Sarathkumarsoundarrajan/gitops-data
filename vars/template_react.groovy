@@ -19,7 +19,7 @@ metadata:
   labels:
     app: jenkins-agent
 spec:
-  containers:
+    containers:
   - name: node
     image: "node:18-alpine"
     command:
@@ -35,7 +35,7 @@ spec:
     command:
     - cat
     tty: true
-  - name: kaniko   # <-- Add this
+  - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
     command:
     - cat
