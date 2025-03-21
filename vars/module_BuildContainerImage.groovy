@@ -3,8 +3,7 @@
 def call() {
 
   container('kaniko') {
-    sh "/kaniko/executor --context ${WORKSPACE} --destination=gcr.io/kaniko-project/executor:latest"
-
+   sh "/kaniko/executor --context ${WORKSPACE} --destination $IMAGE_NAME"
   }
 
 }
