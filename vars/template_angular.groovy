@@ -37,7 +37,8 @@ spec:
     - cat
     tty: true
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug
+      image: gcr.io/kaniko-project/executor:latest
+      args: ["--destination=docker.io/kaniko:latest"]
     command:
     - cat
     tty: true
