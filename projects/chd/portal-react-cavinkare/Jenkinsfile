@@ -11,22 +11,25 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    def DEPLOY_ENV = params.ENVIRONMENT // Assign ENVIRONMENT here
+                    def DEPLOY_ENV = params.ENVIRONMENT
 
                     def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
                     def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
                     def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
+                    def ANGULAR_VERSION = "12" // Define Angular version
+                    def NODE_IMAGE = "node:18-alpine"
                     def SONAR_ENVIRONMENTS = ["dev"]
                     def ENABLE_SONAR = false
                     def ENABLE_SONAR_QUALITY_GATE = false
-                    def NODE_IMAGE = ""
 
                     echo "Running in environment: ${DEPLOY_ENV}"
 
-                    template_react(
+                    // Call the updated function
+                    template_angular(
                         PROJECT_SCM_URL,
                         PROJECT_NAME,
                         GITOPS_DATA_PROJECT_PATH,
+                        ANGULAR_VERSION,
                         NODE_IMAGE,
                         ENABLE_SONAR,
                         ENABLE_SONAR_QUALITY_GATE,
