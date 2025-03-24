@@ -1,5 +1,8 @@
 @Library('gitops-data') _
 
+// Define ENVIRONMENT at the beginning
+def ENVIRONMENT = "staging" // Change to 'dev', 'prod', etc. as needed
+
 def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
 def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
 def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
@@ -7,6 +10,8 @@ def SONAR_ENVIRONMENTS = ["dev"]
 def ENABLE_SONAR = false
 def ENABLE_SONAR_QUALITY_GATE = false
 def NODE_IMAGE = ""
+
+echo "Running in environment: ${ENVIRONMENT}"
 
 template_react(
   "$PROJECT_SCM_URL",
