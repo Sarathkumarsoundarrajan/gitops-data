@@ -40,6 +40,7 @@ def call(
             volumeMounts:
             - mountPath: "/workspace"
               name: "workspace-volume"
+              readOnly: false
             - name: kaniko-secret
               mountPath: /kaniko/.docker
           volumes:
@@ -52,74 +53,59 @@ def call(
       """
             }
         }
+
         environment {
             IMAGE_NAME = "${COHERENT_DOCKER_REGISTRY_URL}/${PROJECT_NAME.toLowerCase()}:${BUILD_NUMBER}"
             PREVIOUS_BUILD_NUMBER = util_subtractAndConvert("${BUILD_NUMBER}")
             DEPLOYMENT_FILE_PATH = "projects/${GITOPS_DATA_PROJECT_PATH}/k8s-config/${ENVIRONMENT}/deployment.yaml"
             PROJECT_CONFIG_PATH = "gitops-data/projects/${GITOPS_DATA_PROJECT_PATH}/config"
             COMMON_PATH = "gitops-data/common"
-            PROJECT_NAME = "${PROJECT_NAME}"
-            PROJECT_SCM_URL = "${PROJECT_SCM_URL}"
-            ANGULAR_VERSION = "${ANGULAR_VERSION}"
+            SONAR_TOKEN = credentials('SONAR_TOKEN')
+            COHERENT_GITOPS_DATA_TOKEN = credentials('COHERENT_GITOPS_DATA_TOKEN')
         }
 
         stages {
-
             stage('Check out the Source Code') {
                 steps {
-                    script {
-                        module_checkOutTheSourceCode()
-                    }
+                    module_checkOutTheSourceCode()
                 }
             }
 
             stage('Obtaining Config Files') {
                 steps {
-                    script {
-                        module_obtainingConfigFiles()
-                    }
+                    module_obtainingConfigFiles()
                 }
             }
 
             stage('SonarQube Analysis') {
                 when { expression { ENABLE_SONAR && util_isStringInList(ENVIRONMENT, SONAR_ENVIRONMENTS) } }
                 steps {
-                    script {
-                        module_js_sonarQubeAnalysis()
-                    }
+                    module_js_sonarQubeAnalysis()
                 }
             }
 
             stage('Quality Gate') {
                 when { expression { ENABLE_SONAR_QUALITY_GATE && ENABLE_SONAR && util_isStringInList(ENVIRONMENT, SONAR_ENVIRONMENTS) } }
                 steps {
-                    script {
-                        waitForQualityGate abortPipeline: true
-                    }
+                    waitForQualityGate abortPipeline: true
                 }
             }
 
             stage('Install and Build') {
                 steps {
-                    script {
-                        module_angular_installAndBuild()
-                    }
+                    module_angular_installAndBuild()
                 }
             }
 
             stage('Build Container Image') {
                 steps {
-                    script {
-                        module_BuildContainerImage()
-                    }
+                    module_BuildContainerImage()
                 }
             }
 
             stage('Publish Deployment') {
-                steps {                    
-                    script {
-                        module_publishDeployment()
-                    }
+                steps {
+                    module_publishDeployment()
                 }
             }
         }
