@@ -7,14 +7,12 @@ pipeline {
         string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Deployment environment')
     }
 
-    environment {
-        DEPLOY_ENV = params.ENVIRONMENT
-    }
-
     stages {
         stage('Initialize') {
             steps {
                 script {
+                    def DEPLOY_ENV = params.ENVIRONMENT // Assign ENVIRONMENT here
+
                     def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
                     def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
                     def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
