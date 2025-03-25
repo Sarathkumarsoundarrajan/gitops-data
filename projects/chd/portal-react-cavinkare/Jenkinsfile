@@ -1,4 +1,4 @@
-@Library('gitops-data') _
+@Library('gitops-data') _  // Load the shared library
 
 pipeline {
     agent any
@@ -7,34 +7,41 @@ pipeline {
         string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Deployment environment')
     }
 
+    environment {
+        PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
+        GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
+        ANGULAR_VERSION = "12"
+        NODE_IMAGE = "node:18-alpine"
+        ENABLE_SONAR = "false"
+        ENABLE_SONAR_QUALITY_GATE = "false"
+    }
+
     stages {
         stage('Initialize') {
             steps {
                 script {
                     def DEPLOY_ENV = params.ENVIRONMENT
-
-                    def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
-                    def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-                    def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
-                    def ANGULAR_VERSION = "12" // Define Angular version
-                    def NODE_IMAGE = "node:18-alpine"
-                    def SONAR_ENVIRONMENTS = ["dev"]
-                    def ENABLE_SONAR = false
-                    def ENABLE_SONAR_QUALITY_GATE = false
-
                     echo "Running in environment: ${DEPLOY_ENV}"
 
-                    // Call the template_angular function
-                    template_angular(
+                    // Extract project name from Git URL
+                    def PROJECT_NAME = PROJECT_SCM_URL.tokenize('/').last().replace('.git', '')
+
+                    echo "Project Name: ${PROJECT_NAME}"
+
+                    // Call the shared library function
+                    def sharedPipeline = template_angular(
                         PROJECT_SCM_URL,
                         PROJECT_NAME,
                         GITOPS_DATA_PROJECT_PATH,
                         ANGULAR_VERSION,
                         NODE_IMAGE,
-                        ENABLE_SONAR,
-                        ENABLE_SONAR_QUALITY_GATE,
-                        SONAR_ENVIRONMENTS
+                        ENABLE_SONAR.toBoolean(),
+                        ENABLE_SONAR_QUALITY_GATE.toBoolean(),
+                        ["dev"] // SONAR_ENVIRONMENTS
                     )
+
+                    // Execute the returned pipeline steps
+                    sharedPipeline()
                 }
             }
         }
