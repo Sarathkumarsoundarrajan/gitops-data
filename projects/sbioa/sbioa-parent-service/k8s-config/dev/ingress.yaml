@@ -25,3 +25,13 @@ spec:
             name: parent-svc
             port: 
               number: 8011
+  - host: "sbioa-dev-parent-alt.coherent.in"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: parent-svc
+            port: 
+              number: 8013

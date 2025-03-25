@@ -9,5 +9,8 @@ spec:
     - port: 8011
       protocol: TCP
       targetPort: 8011
+    - port: 8013
+      protocol: TCP
+      targetPort: 8013 
   selector:
     app: parent
