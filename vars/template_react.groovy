@@ -35,6 +35,22 @@ def call(
             command:
             - cat
             tty: true
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:v1.9.1-debug
+            command:
+            - /busybox/cat
+            tty: true
+            volumeMounts:
+            - mountPath: /kaniko/.docker
+              name: kaniko-secret
+            - mountPath: /workspace
+              name: workspace-volume
+          volumes:
+          - name: kaniko-secret
+            secret:
+              secretName: kaniko-secret
+          - name: workspace-volume
+            emptyDir: {}
       """
             }
         }
@@ -84,7 +100,9 @@ def call(
 
             stage('Build Container Image') {
                 steps {
-                    module_BuildContainerImage()
+                    container('kaniko') {
+                        module_BuildContainerImage()
+                    }
                 }
             }
 
