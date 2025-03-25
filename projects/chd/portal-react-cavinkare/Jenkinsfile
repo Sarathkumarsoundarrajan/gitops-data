@@ -1,4 +1,4 @@
-@Library('gitops-data') _  // Ensure the shared library is configured in Jenkins
+@Library('gitops-data') _
 
 pipeline {
     agent any
@@ -7,37 +7,33 @@ pipeline {
         string(name: 'ENVIRONMENT', defaultValue: 'dev', description: 'Deployment environment')
     }
 
-    environment {
-        PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
-        GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-        PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL) // Ensure this function exists in the shared library
-        ANGULAR_VERSION = "12"
-        NODE_IMAGE = "node:18-alpine"
-        SONAR_ENVIRONMENTS = "dev"
-        ENABLE_SONAR = "false"
-        ENABLE_SONAR_QUALITY_GATE = "false"
-    }
-
     stages {
         stage('Initialize') {
             steps {
                 script {
-                    echo "Running in environment: ${params.ENVIRONMENT}"
+                    def DEPLOY_ENV = params.ENVIRONMENT
 
-                    // Convert string values to boolean
-                    def sonarEnabled = ENABLE_SONAR.toBoolean()
-                    def sonarQualityGateEnabled = ENABLE_SONAR_QUALITY_GATE.toBoolean()
+                    def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
+                    def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
+                    def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
+                    def ANGULAR_VERSION = "12" // Define Angular version
+                    def NODE_IMAGE = "node:18-alpine"
+                    def SONAR_ENVIRONMENTS = ["dev"]
+                    def ENABLE_SONAR = false
+                    def ENABLE_SONAR_QUALITY_GATE = false
 
-                    // Call the shared library function
+                    echo "Running in environment: ${DEPLOY_ENV}"
+
+                    // Call the template_angular function
                     template_angular(
                         PROJECT_SCM_URL,
                         PROJECT_NAME,
                         GITOPS_DATA_PROJECT_PATH,
                         ANGULAR_VERSION,
                         NODE_IMAGE,
-                        sonarEnabled,
-                        sonarQualityGateEnabled,
-                        [SONAR_ENVIRONMENTS]
+                        ENABLE_SONAR,
+                        ENABLE_SONAR_QUALITY_GATE,
+                        SONAR_ENVIRONMENTS
                     )
                 }
             }
