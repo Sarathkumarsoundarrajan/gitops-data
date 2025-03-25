@@ -22,23 +22,19 @@ def call(
           containers:
           - name: node
             image: "${NODE_IMAGE ?: 'node:18-alpine'}"
-            command:
-            - cat
+            command: ["cat"]
             tty: true
           - name: java-node
             image: timbru31/java-node
-            command:
-            - cat
+            command: ["cat"]
             tty: true
           - name: git
             image: bitnami/git:latest
-            command:
-            - cat
+            command: ["cat"]
             tty: true
           - name: kaniko
             image: gcr.io/kaniko-project/executor:v1.9.1-debug
-            command:
-            - /busybox/cat
+            command: ["/busybox/cat"]
             tty: true
             volumeMounts:
             - mountPath: /kaniko/.docker
@@ -54,7 +50,9 @@ def call(
       """
             }
         }
+
         environment {
+            ENVIRONMENT = "${params.ENVIRONMENT ?: 'dev'}"
             IMAGE_NAME = "${COHERENT_DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${BUILD_NUMBER}"
             PREVIOUS_BUILD_NUMBER = util_subtractAndConvert("${BUILD_NUMBER}")
             DEPLOYMENT_FILE_PATH = "projects/${GITOPS_DATA_PROJECT_PATH}/k8s-config/${ENVIRONMENT}/deployment.yaml"
@@ -68,47 +66,73 @@ def call(
         stages {
             stage('Check out the Source Code') {
                 steps {
-                    module_checkOutTheSourceCode()
+                    script {
+                        echo "Cloning the repository..."
+                        module_checkOutTheSourceCode()
+                    }
                 }
             }
 
             stage('Obtaining Config Files') {
                 steps {
-                    module_obtainingConfigFiles()
+                    script {
+                        echo "Obtaining config files..."
+                        module_obtainingConfigFiles()
+                    }
                 }
             }
 
             stage('SonarQube Analysis') {
-                when { expression { ENABLE_SONAR && util_isStringInList(ENVIRONMENT, SONAR_ENVIRONMENTS) } }
+                when { expression { (ENABLE_SONAR ?: false) && util_isStringInList(ENVIRONMENT ?: "", SONAR_ENVIRONMENTS ?: []) } }
                 steps {
-                    module_js_sonarQubeAnalysis()
+                    script {
+                        echo "Running SonarQube Analysis..."
+                        module_js_sonarQubeAnalysis()
+                    }
                 }
             }
 
             stage('Quality Gate') {
-                when { expression { ENABLE_SONAR_QUALITY_GATE && ENABLE_SONAR && util_isStringInList(ENVIRONMENT, SONAR_ENVIRONMENTS) } }
+                when { expression { (ENABLE_SONAR_QUALITY_GATE ?: false) && (ENABLE_SONAR ?: false) && util_isStringInList(ENVIRONMENT ?: "", SONAR_ENVIRONMENTS ?: []) } }
                 steps {
-                    waitForQualityGate abortPipeline: true
+                    script {
+                        echo "Checking SonarQube Quality Gate..."
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
 
             stage('Install and Build') {
                 steps {
-                    module_react_installAndBuild()
+                    script {
+                        echo "Installing dependencies and building React project..."
+                        module_react_installAndBuild()
+                    }
                 }
             }
 
             stage('Build Container Image') {
                 steps {
                     container('kaniko') {
-                        module_BuildContainerImage()
+                        script {
+                            echo "Building Docker Image with Kaniko..."
+                            sh '''
+                                /kaniko/executor \
+                                  --dockerfile=Dockerfile \
+                                  --context=/workspace \
+                                  --destination=${IMAGE_NAME}
+                            '''
+                        }
                     }
                 }
             }
 
             stage('Publish deployment') {
-                steps {                    
-                    module_publishDeployment()
+                steps {
+                    script {
+                        echo "Publishing deployment..."
+                        module_publishDeployment()
+                    }
                 }
             }
         }
