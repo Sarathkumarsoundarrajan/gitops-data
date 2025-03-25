@@ -37,7 +37,7 @@ List<String> SONAR_ENVIRONMENTS
             command:
             - cat
             tty: true
-          - name: kaniko
+          - name: kaniko #
             image: gcr.io/kaniko-project/executor:debug
             command:
             - cat

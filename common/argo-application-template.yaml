@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://scm.coherent.in/cicd/gitops-data.git
+    repoURL: https://github.com/Sarathkumarsoundarrajan/gitops-data.git
     targetRevision: master
     path: PROJECT_PATH_HERE
   destination: 
