@@ -25,13 +25,14 @@ pipeline {
         stage('Build Container Image') {
             steps {
                 script {
-                    echo 'Building Docker Image with Kaniko...'
+                    echo 'Building Docker Image using Docker...'
                     
                     // Use withCredentials to securely pass Docker Hub credentials
                     withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                            /kaniko/executor --dockerfile=Dockerfile --context=/workspace --destination=docker.io/chd-portal:14 --docker-config=/kaniko/.docker/
+                            docker build -t docker.io/chd-portal:14 .
+                            docker push docker.io/chd-portal:14
                         '''
                     }
                 }
