@@ -2,19 +2,18 @@
 
 def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
 def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)  // No need for string interpolation here
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
 def SONAR_ENVIRONMENTS = ["dev"]
 def ENABLE_SONAR = false
 def ENABLE_SONAR_QUALITY_GATE = false
-def NODE_IMAGE = ""  // Set this value as needed
+def NODE_IMAGE = ""
 
-// Calling the template_react function to deploy the React application
 template_react(
-    PROJECT_SCM_URL,
-    PROJECT_NAME,
-    GITOPS_DATA_PROJECT_PATH,
-    NODE_IMAGE,
-    ENABLE_SONAR,
-    ENABLE_SONAR_QUALITY_GATE,
-    SONAR_ENVIRONMENTS
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
 )
