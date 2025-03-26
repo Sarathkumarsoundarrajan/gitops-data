@@ -21,9 +21,11 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
+    command:
+    - /kaniko/executor
     args:
-    - "--dockerfile=Dockerfile"
-    - "--context=/workspace"
+    - "--dockerfile=/workspace/Dockerfile"
+    - "--context=dir:///workspace"
     - "--destination=docker.io/sarath6400/chd-portal:6"
     - "--skip-tls-verify"
     volumeMounts:
@@ -42,8 +44,8 @@ spec:
     stages {
         stage('Build and Push Docker Image') {
             steps {
-                script {
-                    echo "Building and pushing the Docker image using Kaniko..."
+                container('kaniko') {
+                    sh 'echo "Building and pushing image with Kaniko..."'
                 }
             }
         }
