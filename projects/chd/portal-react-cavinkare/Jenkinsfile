@@ -26,14 +26,27 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image using Docker...'
-                    
+
                     // Use withCredentials to securely pass Docker Hub credentials
                     withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh '''
-                            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                            docker build -t docker.io/chd-portal:14 .
-                            docker push docker.io/chd-portal:14
-                        '''
+                        try {
+                            // Logging into Docker Hub
+                            sh '''
+                                echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                            '''
+                            // Building the Docker image
+                            sh '''
+                                docker build -t docker.io/chd-portal:14 .
+                            '''
+                            // Pushing the Docker image to Docker Hub
+                            sh '''
+                                docker push docker.io/chd-portal:14
+                            '''
+                        } catch (Exception e) {
+                            echo "Docker build or push failed: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
                     }
                 }
             }
