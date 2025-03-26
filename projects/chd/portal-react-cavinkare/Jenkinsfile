@@ -1,95 +1,19 @@
 @Library('gitops-data') _
 
-pipeline {
-    agent any
-    environment {
-        PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
-        GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-        PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
-        SONAR_ENVIRONMENTS = "dev"  // Fixed to use single/double quotes
-        ENABLE_SONAR = false  // Set to true if you want to enable Sonar analysis
-        ENABLE_SONAR_QUALITY_GATE = false  // Set to true if you want to enable Sonar quality gate check
-        NODE_IMAGE = ""  // Set the appropriate image if needed
-    }
+def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
+def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
+def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def SONAR_ENVIRONMENTS = ["dev"]
+def ENABLE_SONAR = false
+def ENABLE_SONAR_QUALITY_GATE = false
+def NODE_IMAGE = ""
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                script {
-                    // Checkout the code from the GitHub repository
-                    echo "Checking out code from $PROJECT_SCM_URL"
-                    git url: PROJECT_SCM_URL
-                }
-            }
-        }
-
-        stage('Prepare React Project') {
-            steps {
-                script {
-                    // Calling the template function to handle React app setup
-                    echo "Setting up React project for $PROJECT_NAME"
-                    template_react(
-                        PROJECT_SCM_URL,
-                        PROJECT_NAME,
-                        GITOPS_DATA_PROJECT_PATH,
-                        NODE_IMAGE,
-                        ENABLE_SONAR,
-                        ENABLE_SONAR_QUALITY_GATE,
-                        SONAR_ENVIRONMENTS
-                    )
-                }
-            }
-        }
-
-        stage('Build React Application') {
-            steps {
-                script {
-                    // Build the React application (assuming npm/yarn is used)
-                    echo "Building React application..."
-                    sh 'npm install'  // Or replace with `yarn install` if using yarn
-                    sh 'npm run build'  // Or `yarn build` for yarn
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Assuming Dockerfile is in the root directory
-                    echo "Building and pushing Docker image for $PROJECT_NAME"
-                    sh """
-                        docker build -t $PROJECT_NAME:latest .
-                        docker push $PROJECT_NAME:latest
-                    """
-                }
-            }
-        }
-
-        // Optional: If you're using SonarQube for static code analysis, enable this stage
-        stage('SonarQube Analysis') {
-            when {
-                expression { return ENABLE_SONAR == true }
-            }
-            steps {
-                script {
-                    // Integrate with SonarQube for static code analysis
-                    echo "Running SonarQube analysis on the project"
-                    withSonarQubeEnv('SonarQube') {
-                        sh 'mvn clean install sonar:sonar'  // If using Maven
-                        // Or use npm run for JS/React projects:
-                        // sh 'npm run sonar'
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo "Pipeline executed successfully!"
-        }
-        failure {
-            echo "Pipeline execution failed. Please check the logs for errors."
-        }
-    }
-}
+template_react(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)
