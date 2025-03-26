@@ -1,6 +1,4 @@
 #!/usr/bin/env groovy
-
-
 def call(
 String PROJECT_SCM_URL,
 String PROJECT_NAME,
