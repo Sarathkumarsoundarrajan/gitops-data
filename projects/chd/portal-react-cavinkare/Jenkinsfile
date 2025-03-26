@@ -8,12 +8,62 @@ def ENABLE_SONAR = false
 def ENABLE_SONAR_QUALITY_GATE = false
 def NODE_IMAGE = ""
 
-template_react(
-  "$PROJECT_SCM_URL",
-  "$PROJECT_NAME",
-  "$GITOPS_DATA_PROJECT_PATH",
-  "$NODE_IMAGE",
-  ENABLE_SONAR,
-  ENABLE_SONAR_QUALITY_GATE,
-  SONAR_ENVIRONMENTS
-)
+pipeline {
+    agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker/
+  volumes:
+  - name: docker-config
+    secret:
+      secretName: docker-hub-creds
+      items:
+        - key: .dockerconfigjson
+          path: config.json
+'''
+        }
+    }
+    stages {
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    sh '''
+                    /kaniko/executor --dockerfile=Dockerfile \
+                    --context=/workspace \
+                    --destination=docker.io/sarath6400/chd-portal:6 \
+                    --skip-tls-verify
+                    '''
+                }
+            }
+        }
+        stage('Deploy Application') {
+            steps {
+                script {
+                    template_react(
+                        "$PROJECT_SCM_URL",
+                        "$PROJECT_NAME",
+                        "$GITOPS_DATA_PROJECT_PATH",
+                        "$NODE_IMAGE",
+                        ENABLE_SONAR,
+                        ENABLE_SONAR_QUALITY_GATE,
+                        SONAR_ENVIRONMENTS
+                    )
+                }
+            }
+        }
+    }
+}
