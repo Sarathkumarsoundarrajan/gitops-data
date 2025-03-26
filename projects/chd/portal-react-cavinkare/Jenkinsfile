@@ -2,77 +2,19 @@
 
 def PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
 def GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-def PROJECT_NAME = util_extractProjectNameFromGitUrl("$PROJECT_SCM_URL")
+def PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)  // No need for string interpolation here
 def SONAR_ENVIRONMENTS = ["dev"]
 def ENABLE_SONAR = false
 def ENABLE_SONAR_QUALITY_GATE = false
-def NODE_IMAGE = ""
+def NODE_IMAGE = ""  // Set this value as needed
 
-pipeline {
-    agent any
-
-    environment {
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'  // The credentials ID you set in Jenkins
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Container Image') {
-            steps {
-                script {
-                    echo 'Building Docker Image using Docker...'
-
-                    // Use withCredentials to securely pass Docker Hub credentials
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        try {
-                            // Logging into Docker Hub
-                            sh '''
-                                echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                            '''
-                            // Building the Docker image
-                            sh '''
-                                docker build -t docker.io/chd-portal:14 .
-                            '''
-                            // Pushing the Docker image to Docker Hub
-                            sh '''
-                                docker push docker.io/chd-portal:14
-                            '''
-                        } catch (Exception e) {
-                            echo "Docker build or push failed: ${e.getMessage()}"
-                            currentBuild.result = 'FAILURE'
-                            throw e
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Deploy React Application') {
-            steps {
-                template_react(
-                    "$PROJECT_SCM_URL",
-                    "$PROJECT_NAME",
-                    "$GITOPS_DATA_PROJECT_PATH",
-                    "$NODE_IMAGE",
-                    ENABLE_SONAR,
-                    ENABLE_SONAR_QUALITY_GATE,
-                    SONAR_ENVIRONMENTS
-                )
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and deployment successful!'
-        }
-        failure {
-            echo 'Build or deployment failed!'
-        }
-    }
-}
+// Calling the template_react function to deploy the React application
+template_react(
+    PROJECT_SCM_URL,
+    PROJECT_NAME,
+    GITOPS_DATA_PROJECT_PATH,
+    NODE_IMAGE,
+    ENABLE_SONAR,
+    ENABLE_SONAR_QUALITY_GATE,
+    SONAR_ENVIRONMENTS
+)
