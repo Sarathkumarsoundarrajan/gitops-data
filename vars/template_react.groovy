@@ -39,9 +39,6 @@ def call(
             volumeMounts:
             - mountPath: /kaniko/.docker
               name: kaniko-secret
-            env:
-            - name: DOCKER_CONFIG
-              value: /kaniko/.docker
             - mountPath: /workspace
               name: workspace-volume
           volumes:
@@ -115,22 +112,10 @@ def call(
             }
 
             stage('Build Container Image') {
-                    steps {
-                        container('kaniko') {
-                            script {
-                                echo "Building Docker Image with Kaniko..."
-                                sh '''
-                                    /kaniko/executor \
-                                      --dockerfile=Dockerfile \
-                                      --context=/workspace \
-                                      --destination=docker.io/chd-portal:28 \
-                                      --skip-tls-verify \
-                                      --cache=true
-                                '''
-                            }
-                        }
-                    }
+                steps {
+                    module_BuildContainerImage()
                 }
+            }
 
             stage('Publish deployment') {
                 steps {
