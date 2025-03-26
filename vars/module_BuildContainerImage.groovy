@@ -3,7 +3,12 @@
 def call() {
 
   container('kaniko') {
-   sh "/kaniko/executor --context ${WORKSPACE} --destination $IMAGE_NAME"
+   sh " /kaniko/executor \
+                      --dockerfile=Dockerfile \
+                      --context=/workspace \
+                      --destination=docker.io/$IMAGE_NAME \
+                      --skip-tls-verify \
+                      --cache=true"
   }
 
 }
