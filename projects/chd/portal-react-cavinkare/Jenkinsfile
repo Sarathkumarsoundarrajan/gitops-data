@@ -5,8 +5,8 @@ pipeline {
     environment {
         PROJECT_SCM_URL = "https://github.com/Sarathkumarsoundarrajan/chd-portal.git"
         GITOPS_DATA_PROJECT_PATH = "chd/portal-react-cavinkare"
-        PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)  // Correctly extracting project name
-        SONAR_ENVIRONMENTS = ["dev"]
+        PROJECT_NAME = util_extractProjectNameFromGitUrl(PROJECT_SCM_URL)
+        SONAR_ENVIRONMENTS = "dev"  // Fixed to use single/double quotes
         ENABLE_SONAR = false  // Set to true if you want to enable Sonar analysis
         ENABLE_SONAR_QUALITY_GATE = false  // Set to true if you want to enable Sonar quality gate check
         NODE_IMAGE = ""  // Set the appropriate image if needed
