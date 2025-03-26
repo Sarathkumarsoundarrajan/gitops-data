@@ -35,21 +35,23 @@ List<String> SONAR_ENVIRONMENTS
             command:
             - cat
             tty: true
-          - name: kaniko #
-            image: gcr.io/kaniko-project/executor:debug
-            command:
-            - cat
-            tty: true
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:latest
+            args:
+              - "--context=/workspace"
+              - "--destination=docker.io/chd-portal:33"
+              - "--dockerfile=/workspace/Dockerfile"
+              - "--cache=true"
             volumeMounts:
-            - mountPath: "/workspace"
-              name: "workspace-volume"
+            - name: docker-config
+              mountPath: /kaniko/.docker/
               readOnly: false
             - name: kaniko-secret
               mountPath: /kaniko/.docker
           volumes:
-          - name: kaniko-secret
+          - name: docker-config
             secret:
-              secretName: registry-regcred
+              secretName: regcred
               items:
                 - key: .dockerconfigjson
                   path: config.json
