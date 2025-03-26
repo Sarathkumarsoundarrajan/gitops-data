@@ -21,9 +21,11 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    command:
-    - /busybox/cat
-    tty: true
+    args:
+    - "--dockerfile=Dockerfile"
+    - "--context=/workspace"
+    - "--destination=docker.io/sarath6400/chd-portal:6"
+    - "--skip-tls-verify"
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker/
@@ -41,12 +43,7 @@ spec:
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    sh '''
-                    /kaniko/executor --dockerfile=Dockerfile \
-                    --context=/workspace \
-                    --destination=docker.io/sarath6400/chd-portal:6 \
-                    --skip-tls-verify
-                    '''
+                    echo "Building and pushing the Docker image using Kaniko..."
                 }
             }
         }
