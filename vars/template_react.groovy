@@ -39,6 +39,9 @@ def call(
             volumeMounts:
             - mountPath: /kaniko/.docker
               name: kaniko-secret
+            env:
+            - name: DOCKER_CONFIG
+              value: /kaniko/.docker
             - mountPath: /workspace
               name: workspace-volume
           volumes:
