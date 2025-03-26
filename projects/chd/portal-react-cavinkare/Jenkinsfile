@@ -30,7 +30,8 @@ pipeline {
                     // Use withCredentials to securely pass Docker Hub credentials
                     withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
-                            echo $DOCKER_PASSWORD | /kaniko/executor --dockerfile=Dockerfile --context=/workspace --destination=docker.io/chd-portal:14 --docker-config=/kaniko/.docker/
+                            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                            /kaniko/executor --dockerfile=Dockerfile --context=/workspace --destination=docker.io/chd-portal:14 --docker-config=/kaniko/.docker/
                         '''
                     }
                 }
