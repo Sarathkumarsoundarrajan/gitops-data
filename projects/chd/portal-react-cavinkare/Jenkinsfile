@@ -8,88 +8,12 @@ def ENABLE_SONAR = false
 def ENABLE_SONAR_QUALITY_GATE = false
 def NODE_IMAGE = ""
 
-pipeline {
-    agent {
-        kubernetes {
-            yaml '''
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    jenkins-agent: kaniko
-spec:
-  containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
-    command:
-    - "/kaniko/executor"
-    args:
-    - "--context=/workspace/"
-    - "--dockerfile=/workspace/Dockerfile"
-    - "--destination=docker.io/sarath6400/chd-portal:6"
-    - "--skip-tls-verify"
-    - "--verbosity=debug"
-    volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
-  restartPolicy: Never
-  volumes:
-  - name: docker-config
-    secret:
-      secretName: docker-hub-creds
-      items:
-        - key: .dockerconfigjson
-          path: config.json
-'''
-        }
-    }
-
-    stages {
-        stage('Check Workspace') {
-            steps {
-                container('kaniko') {
-                    sh '''
-                    echo "Checking if Dockerfile exists..."
-                    if [ ! -f /workspace/Dockerfile ]; then
-                        echo "ERROR: Dockerfile not found!"
-                        exit 1
-                    fi
-                    echo "Dockerfile found. Proceeding..."
-                    '''
-                }
-            }
-        }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                container('kaniko') {
-                    sh '''
-                    echo "Building and pushing image with Kaniko..."
-                    /kaniko/executor \
-                        --context=/workspace/ \
-                        --dockerfile=/workspace/Dockerfile \
-                        --destination=docker.io/sarath6400/chd-portal:6 \
-                        --skip-tls-verify \
-                        --verbosity=debug
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy Application') {
-            steps {
-                script {
-                    template_react(
-                        "$PROJECT_SCM_URL",
-                        "$PROJECT_NAME",
-                        "$GITOPS_DATA_PROJECT_PATH",
-                        "$NODE_IMAGE",
-                        ENABLE_SONAR,
-                        ENABLE_SONAR_QUALITY_GATE,
-                        SONAR_ENVIRONMENTS
-                    )
-                }
-            }
-        }
-    }
-}
+template_react(
+  "$PROJECT_SCM_URL",
+  "$PROJECT_NAME",
+  "$GITOPS_DATA_PROJECT_PATH",
+  "$NODE_IMAGE",
+  ENABLE_SONAR,
+  ENABLE_SONAR_QUALITY_GATE,
+  SONAR_ENVIRONMENTS
+)
