@@ -21,13 +21,14 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    command: 
+    command:
     - "/kaniko/executor"
     args:
+    - "--context=/workspace/"
     - "--dockerfile=/workspace/Dockerfile"
-    - "--context=dir:///workspace"
     - "--destination=docker.io/sarath6400/chd-portal:6"
     - "--skip-tls-verify"
+    - "--verbosity=debug"
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker/
@@ -50,7 +51,7 @@ spec:
                     sh '''
                     echo "Checking if Dockerfile exists..."
                     if [ ! -f /workspace/Dockerfile ]; then
-                        echo "ERROR: Dockerfile not found in /workspace!"
+                        echo "ERROR: Dockerfile not found!"
                         exit 1
                     fi
                     echo "Dockerfile found. Proceeding..."
@@ -65,10 +66,11 @@ spec:
                     sh '''
                     echo "Building and pushing image with Kaniko..."
                     /kaniko/executor \
+                        --context=/workspace/ \
                         --dockerfile=/workspace/Dockerfile \
-                        --context=dir:///workspace \
                         --destination=docker.io/sarath6400/chd-portal:6 \
-                        --skip-tls-verify
+                        --skip-tls-verify \
+                        --verbosity=debug
                     '''
                 }
             }
