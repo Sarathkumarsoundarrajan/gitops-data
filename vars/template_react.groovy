@@ -112,20 +112,22 @@ def call(
             }
 
             stage('Build Container Image') {
-                steps {
-                    container('kaniko') {
-                        script {
-                            echo "Building Docker Image with Kaniko..."
-                            sh '''
-                                /kaniko/executor \
-                                  --dockerfile=Dockerfile \
-                                  --context=/workspace \
-                                  --destination=${IMAGE_NAME}
-                            '''
+                    steps {
+                        container('kaniko') {
+                            script {
+                                echo "Building Docker Image with Kaniko..."
+                                sh '''
+                                    /kaniko/executor \
+                                      --dockerfile=Dockerfile \
+                                      --context=/workspace \
+                                      --destination=docker.io/chd-portal:28 \
+                                      --skip-tls-verify \
+                                      --cache=true
+                                '''
+                            }
                         }
                     }
                 }
-            }
 
             stage('Publish deployment') {
                 steps {
